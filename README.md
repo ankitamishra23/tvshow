@@ -67,7 +67,7 @@ Top section should contain the show cast that come back from the API
 
 ![Search]
 
-Search bar that filters on the breeds.
+Search bar that filters on the shows.
 
 - As the user types characters into the box, the list of breeds should be filtered
 - Show shows.
