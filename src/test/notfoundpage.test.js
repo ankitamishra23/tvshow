@@ -5,8 +5,18 @@ import NotFoundPage from '../Components/NotFoundPage'
 
 
 describe("testing NotFoundPage", () => {
+
+
+  let wrapper;  
+    
+
+    beforeEach(() => {
+      const propData = ['a'];
+  
+      wrapper = mount(<NotFoundPage/>);
+
+  })
   it("should go to 404 page", () => {
-    const component = mount(<NotFoundPage/>);
-    expect(component.find(NotFoundPage)).toHaveLength(1);
+     expect(wrapper.find('center').length).toEqual(1)
+})
   });
-});

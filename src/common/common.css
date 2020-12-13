@@ -1,0 +1,21 @@
+.MuiCardContent-root {
+  padding: 16px 16px 2px !important;
+}
+
+.item {
+  background-color: #c70039;
+  color: white;
+  border-radius: " 5px 5px 5px 5px";
+  width: "110px";
+  margin-bottom: -17px;
+  display: block;
+  text-align: center;
+  border-radius: 5px;
+  padding: 2px;
+  font-weight: 500;
+}
+
+.premiered {
+  display: block;
+  margin: 24px 0 9px;
+}

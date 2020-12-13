@@ -2,6 +2,7 @@ import React from 'react';
 import  { mount } from '../enzyme'
 import Dashboard from '../Components/dashboard/Dashboard'
 import mockedAxios from './_mock_/axios';
+import { shallow } from 'enzyme';
 
 describe('Dashboard comp', () => {
     let wrapper;  
@@ -9,69 +10,71 @@ describe('Dashboard comp', () => {
 
     beforeEach(() => {
       const propData = ['a'];
+
+      global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ results: ['A','B','C'] }),
+      })
+    );
   
-      wrapper = mount(<Dashboard data = {propData} />);
+      wrapper = shallow(<Dashboard data = {propData} />);
+
+      const obj = [{'id': 1,'name': 'movie','image':'xyz','premiered': 'l','rating':{'average': 'avh'}},
+    
+      {'id': 1,'name': 'movie','image':'xyz','premiered': 'l','rating':{'average': 'avh'}},
+      {'id': 1,'name': 'movie','image':'xyz','premiered': 'l','rating':{'average': 'avh'}}
+
+    ];
+    const obj1 = [{'id': 1,'name': 'movie','image':'xyz','premiered': 'l','rating':{'average': 'avh'}},
+    
+      {'id': 1,'name': 'movie','image':'xyz','premiered': 'l','rating':{'average': 'avh'}},
+     
+
+    ];
+
+      
+      wrapper.instance().setState({
+        tvShows: obj,
+        currentShows : obj1
+      });
+
 
   })
      
-  it('search', () => {
-    const event = {
-      target: {
-        value: "asb"
-      }
-    } 
-    wrapper.find(SearchInput).simulate('change', event)
+
+  it('shouldsetstate',()=> {
+    console.log('state--',wrapper.instance().state);
+    wrapper.instance().componentDidMount();
   })
 
-  it('should simulate onchange', () => {
+  it('should simulate on paginatin',()=> {
+   const paramObj = {
+     keycode :9,
+     target :{
+       value :'/api'
+     }
+   };
 
-
+   global.fetch = jest.fn(() =>
+   Promise.resolve({
+     json: () => Promise.resolve({ results: [
+       {
+       'show': 'a'
+     },
+     {
+      'show': 'b'
+    }
     
-    const event = {target: { value: ['jj'] }};
-    
-    wrapper.find(SearchInput).simulate('change',event);
-    
+    ] }),
+   })
+ )
 
-});
-it('handles api call ', () => {
-    const data = {
-        data: {
-            'message': [
-                {
-                  id: 1,
-                  title: 'title 1'
-                },
-                {
-                  id: 2,
-                  title: 'title 2'
-                },
-                {
-                  id: 3,
-                  title: 'mocked title'
-               }]
-        }
-        };  
-      
-        mockedAxios.get.mockResolvedValueOnce(data);
-        const setList = jest.fn();        
-        var myDaata =  "";
-       
+ wrapper.instance().searchUpdated(paramObj);
 
-        fetch(`https://api.tvmaze.com/shows`)
-        .then((response) => response.json())
-        .then((details) => {
-          myDaata = JSON.stringify(details)
-        })
-        console.log('wrapper--',myDaata);
 
-        wrapper = mount(<Dashboard/>);      
-      expect(wrapper.find('cardDiv').length).toEqual(myDaata.length);
-
-  
-
-        
-  
   });
+
+  
 
    
 });
