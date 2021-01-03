@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     display: "none",
     textAlign: "center",
+    paddingLeft: "142px",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },

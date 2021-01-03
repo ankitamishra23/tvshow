@@ -47,7 +47,7 @@ describe('Dashboard comp', () => {
     wrapper.instance().componentDidMount();
   })
 
-  it('should simulate on paginatin',()=> {
+  it('should simulate ',()=> {
    const paramObj = {
      keycode :9,
      target :{
@@ -74,7 +74,7 @@ describe('Dashboard comp', () => {
 
   });
 
-  
+ 
 
    
 });

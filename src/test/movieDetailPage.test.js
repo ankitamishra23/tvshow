@@ -58,41 +58,4 @@ describe('MovieDetailPage comp', () => {
       expect(wrapper.find(Container)).toHaveLength(1);
   })
       
-// it('handles api call ', () => {
-//     const data = {
-//         data: {
-//             'message': [
-//                 {
-//                   id: 1,
-//                   title: 'title 1'
-//                 },
-//                 {
-//                   id: 2,
-//                   title: 'title 2'
-//                 },
-//                 {
-//                   id: 3,
-//                   title: 'mocked title'
-//                }]
-//         }
-//         };  
-//        // this.props.location.pathname = "http://localhost:3000/movieDetailPage/1";
-//        // let id = this.props.location.pathname.split('/')[2];
-//         mockedAxios.get.mockResolvedValueOnce(data);
-//         const setList = jest.fn();        
-//         var myDaata =  "";
-        
-//         fetch(`https://api.tvmaze.com/shows/1?embed=cast`)
-//         .then((response) => response.json())
-//         .then((details) => {
-//           myDaata = details
-//         })
-//         console.log('wrapper--',myDaata);
-
-//         wrapper = mount(<MovieDetailPage/>);      
-//       expect(wrapper.find('movieImg').length).toEqual(1);
-
-//   });
-  
-// });
 });

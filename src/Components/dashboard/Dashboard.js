@@ -69,7 +69,7 @@ export class Dashboard extends Component {
   };
 
   render() {
-    const { tvShows, currentShows  } = this.state;
+    const {  currentShows  } = this.state;
 
     const filteredShows = !!this.state.selectedGenre
       ? currentShows.filter((item) =>
@@ -79,7 +79,7 @@ export class Dashboard extends Component {
           (show1, show2) => show2.rating.average - show1.rating.average
         );
 
-    const totalShows = tvShows.length;
+    
 
     return (
       <div>

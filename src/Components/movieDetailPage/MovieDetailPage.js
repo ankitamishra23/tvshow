@@ -57,7 +57,7 @@ export class MovieDetailPage extends Component {
     return (
       <Container className={classes.root}>
         {this.state.loading ? (
-          <div>Loading...</div>
+          <center>Loading...</center>
         ) : (
           <div classname="movieDetails">
             <Header isSearch={false} />
