@@ -10,6 +10,7 @@ import StarRoundedIcon from "@material-ui/icons/StarRounded";
 import { Link } from "react-router-dom";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { getTvSearch, getTvShows } from "../../service/dashboard.service";
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -24,62 +25,68 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    fetch("https://api.tvmaze.com/shows")
-      .then((response) => response.json())
-      .then((results) => {
-        console.log("results", results);
-        const indexOfLastData = this.state.currentPage * 12;
-        const indexOfFirstData = indexOfLastData - 12;
-        sessionStorage.setItem("movieData", JSON.stringify(results));
+    getTvShows().then((results) => {
+      console.log("results", results);
+      const indexOfLastData = this.state.currentPage * 12;
+      const indexOfFirstData = indexOfLastData - 12;
+      sessionStorage.setItem("movieData", JSON.stringify(results));
 
-        this.setState({
-          tvShows: results,
-          currentShows: results.slice(indexOfFirstData, indexOfLastData),
-        });
+      this.setState({
+        tvShows: results,
+        currentShows: results.slice(indexOfFirstData, indexOfLastData),
       });
+    });
   }
 
- 
+
   searchUpdated = (event) => {
     if (event.keycode !== 8 && event.target.value !== "") {
-      const url = "http://api.tvmaze.com/search/shows?q=" + event.target.value;
 
-      fetch(url)
-        .then((response) => response.json())
-        .then((results) => {
-          const filteredData = results.map((row) => row.show);
-          const indexOfLastData = this.state.currentPage * 12;
-          const indexOfFirstData = indexOfLastData - 12;
-          sessionStorage.setItem("movieData", JSON.stringify(filteredData));
+      getTvSearch(event).then((results) => {
+        const filteredData = results.map((row) => row.show);
+        const indexOfLastData = this.state.currentPage * 12;
+        const indexOfFirstData = indexOfLastData - 12;
+        sessionStorage.setItem("movieData", JSON.stringify(filteredData));
 
-          filteredData &&
-            this.setState({
-              tvShows: filteredData,
-              currentShows: filteredData.slice(
-                indexOfFirstData,
-                indexOfLastData
-              ),
-            });
-        });
+        filteredData &&
+          this.setState({
+            tvShows: filteredData,
+            currentShows: filteredData.slice(
+              indexOfFirstData,
+              indexOfLastData
+            ),
+          });
+
+      })
     }
   };
 
   handleGenreChange = (event) => {
+    if (event.target.value === "Reset") {
+      event.target.value = "";
+    }
     this.setState({ selectedGenre: event.target.value });
   };
 
   render() {
-    const {  currentShows  } = this.state;
+
+    const movieItems = ['Reset', 'Drama', 'Science-Fiction', 'Thriller', 'Action', 'Crime', 'Horror',
+      'Romance', 'Adventure', 'Espionage', 'Music', 'Mystery', 'Supernatural', 'Fantasy'
+    ]
+    const { currentShows } = this.state;
 
     const filteredShows = !!this.state.selectedGenre
       ? currentShows.filter((item) =>
-          item.genres.includes(this.state.selectedGenre)
-        )
+        item.genres.includes(this.state.selectedGenre)
+      )
       : currentShows.sort(
-          (show1, show2) => show2.rating.average - show1.rating.average
-        );
+        (show1, show2) => show2.rating.average - show1.rating.average
+      );
 
-    
+    const movieitem1 = movieItems.map((movie) => {
+      return <MenuItem value={movie}>{movie}</MenuItem>
+
+    });
 
     return (
       <div>
@@ -92,21 +99,9 @@ export class Dashboard extends Component {
           renderValue={() => this.state.selectedGenre || "Select a Genre"}
           onChange={this.handleGenreChange}
         >
-          <MenuItem value="">Reset</MenuItem>
-          <MenuItem value="Drama">Drama</MenuItem>
-          <MenuItem value="Science-Fiction">Science-Fiction</MenuItem>
-          <MenuItem value="Thriller">Thriller</MenuItem>
-          <MenuItem value="Action">Action</MenuItem>
-          <MenuItem value="Crime">Crime</MenuItem>
-          <MenuItem value="Horror">Horror</MenuItem>
-          <MenuItem value="Romance">Romance</MenuItem>
-          <MenuItem value="Adventure">Adventure</MenuItem>
-          <MenuItem value="Espionage">Espionage</MenuItem>
-          <MenuItem value="Music">Music</MenuItem>
-          <MenuItem value="Mystery">Mystery</MenuItem>
-          <MenuItem value="Supernatural">Supernatural</MenuItem>
-          <MenuItem value="Fantasy">Fantasy</MenuItem>
+          {movieitem1}
         </Select>
+
         {!!filteredShows.length ? (
           <>
             {!this.state.selectedGenre && (
@@ -151,11 +146,11 @@ export class Dashboard extends Component {
                 );
               })}
             </div>
-           
+
           </>
         ) : (
-          <h1 className="no-shows-fallback">No Shows Found!!</h1>
-        )}
+            <h1 className="no-shows-fallback">No Shows Found!!</h1>
+          )}
       </div>
     );
   }

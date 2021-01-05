@@ -41,6 +41,7 @@ code {
   justify-content: space-evenly;
   padding: 10px;
   height: 790px;
+ 
 }
 
 .poster {
@@ -50,6 +51,7 @@ code {
   height: 550px;
   padding: 5px;
   margin: 5px;
+ 
 }
 
 .movieInfo {
@@ -70,7 +72,12 @@ code {
 }
 
 .schedule {
-  padding: 3px;
+  
+  padding-top: 10px;
+}
+.details {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .runtime {
@@ -149,3 +156,12 @@ code {
   margin: 10px auto 20px;
   text-transform: uppercase;
 }
+@media only screen and (max-width: 600px) {
+  .poster{margin: 5px 5px 91px ;
+    width: 86vw;}
+    .posterContainer {
+      flex-direction:column;
+      justify-content: unset;
+    }
+ }
+

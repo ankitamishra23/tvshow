@@ -8,7 +8,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Divider from "@material-ui/core/Divider";
-import StarRoundedIcon from "@material-ui/icons/StarRounded";
+import { getmovie } from "../../service/movie.service";
+
 
 const classes = makeStyles((theme) => ({
   container: {
@@ -42,15 +43,13 @@ export class MovieDetailPage extends Component {
 
   componentDidMount() {
     let id = this.props.location.pathname.split("/")[2];
-    fetch(`https://api.tvmaze.com/shows/${id}?embed=cast`)
-      .then((response) => response.json())
-      .then((details) => {
-        console.log("moviedetails--", details);
-        this.setState({
-          movieDetails: details,
-          loading: false,
-        });
-      });
+   getmovie(id).then((details)=>{
+    console.log("moviedetails--", details);
+    this.setState({
+      movieDetails: details,
+      loading: false,
+    });
+   })
   }
 
   render() {
@@ -86,14 +85,7 @@ export class MovieDetailPage extends Component {
                       Premiered: {this.state.movieDetails.premiered}
                     </strong>
                     <br />
-                    <Button
-                      startIcon={<StarRoundedIcon />}
-                      variant="contained"
-                      color="primary"
-                    >
-                      {this.state.movieDetails.rating.average}
-                    </Button>
-                    <br />
+                   
 
                     <strong>
                       Genres:{" "}
@@ -105,6 +97,12 @@ export class MovieDetailPage extends Component {
                         );
                       })}
                     </strong>
+                    <br/>
+                    <strong>
+                      Rating :
+                      {this.state.movieDetails.rating.average}
+                      </strong>
+                    <br />
                   </CardContent>
                 </Card>
               </div>
@@ -126,33 +124,30 @@ export class MovieDetailPage extends Component {
                   ></div>
                 </div>
                 <Divider />
-                <div>
+                <div className="schedule">
                   <strong>Language:</strong>
 
                   {this.state.movieDetails.language}
-                </div>
+               
                 <Divider />
-                <div>
+                
                   <strong>Runtime:</strong>
                   {this.state.movieDetails.runtime}
-                </div>
+                
                 <Divider />
-                <div className="schedule">
-                  <span>
+                
+                  <div className="details">
                     <strong>Schedule:</strong>
-                  </span>
-                  <br />
-                  {this.state.movieDetails.schedule.time}
-                  <br />
+                    {this.state.movieDetails.schedule.time}
+                  <br/>
                   <strong>Days:</strong>
                   {this.state.movieDetails.schedule.days.map((day, id) => {
                     return <span key={id}>{day + " "}</span>;
                   })}
-                </div>
                 <Divider />
-                <div className="status">
                   <strong>Status:</strong>
                   {this.state.movieDetails.status}
+                </div>
                 </div>
               </div>
             </div>
